@@ -72,7 +72,6 @@ about:
 extra:
   recipe-maintainers:
     - conda-forge/r
-    - halldc
 
 # Type: Package
 # Package: sass
