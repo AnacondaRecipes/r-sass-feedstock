@@ -71,7 +71,7 @@ about:
 
 extra:
   recipe-maintainers:
-    - conda-forge/r
+    - ianaobi
 
 # Type: Package
 # Package: sass
