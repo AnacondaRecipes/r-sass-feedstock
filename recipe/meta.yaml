@@ -54,6 +54,7 @@ requirements:
   run:
     - r-base  {{ r_version }}
     - {{ native }}gcc-libs         # [win]
+    - {{ native }}gcc-libs-core    # [win]
     - r-r6
     - r-digest
     - r-fs
