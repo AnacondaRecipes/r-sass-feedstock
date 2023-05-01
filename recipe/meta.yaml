@@ -15,43 +15,50 @@ source:
 build:
   merge_build_host: true  # [win]
   number: 0
+  skip: True # [aarch64 or s390x or ppc64le or arm64]
+
   rpaths:
     - lib/R/lib/
     - lib/
+
+  # weird error on windows
+  missing_dso_whitelist:
+    - $RPATH/R.dll  # [win]
+
 
 requirements:
   build:
     - cross-r-base {{ r_base }}  # [build_platform != target_platform]
     - r-r6                       # [build_platform != target_platform]
-    - r-htmltools                # [build_platform != target_platform]
+    - r-htmltools >=0.5.1        # [build_platform != target_platform]
     - r-rlang                    # [build_platform != target_platform]
     - r-rappdirs                 # [build_platform != target_platform]
     - r-fs                       # [build_platform != target_platform]
     - r-digest                   # [build_platform != target_platform]
-    - {{ compiler('c') }}              # [not win]
-    - {{ compiler('m2w64_c') }}        # [win]
-    - {{ compiler('cxx') }}            # [not win]
-    - {{ compiler('m2w64_cxx') }}      # [win]
+    - {{ compiler('c') }}          # [not win]
+    - {{ compiler('cxx') }}        # [not win]
+    - {{native}}toolchain          # [win]
     - {{ posix }}filesystem        # [win]
     - {{ posix }}make
     - {{ posix }}sed               # [win]
     - {{ posix }}coreutils         # [win]
     - {{ posix }}zip               # [win]
   host:
-    - r-base
+    - r-base  {{ r_version }}
     - r-r6
     - r-digest
     - r-fs
-    - r-htmltools
+    - r-htmltools >=0.5.1
     - r-rappdirs
     - r-rlang
   run:
-    - r-base
+    - r-base  {{ r_version }}
     - {{ native }}gcc-libs         # [win]
+    - {{ native }}gcc-libs-core    # [win]
     - r-r6
     - r-digest
     - r-fs
-    - r-htmltools
+    - r-htmltools >=0.5.1
     - r-rappdirs
     - r-rlang
 test:
@@ -70,9 +77,12 @@ about:
     - src/libsass/LICENSE
 
 extra:
-  recipe-maintainers:
-    - conda-forge/r
-    - halldc
+  anaconda-services:
+    ref:  https://anaconda.zendesk.com/agent/tickets/35116
+    reason: "needed for r-devtools"
+    recipe-maintainers:
+      - bkreider
+      - ianaobi
 
 # Type: Package
 # Package: sass
